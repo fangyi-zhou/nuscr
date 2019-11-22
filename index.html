@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css" />
+    <script charset="utf-8" type="text/javascript" src="live.bc.js" ></script>
+    
+    <title>νScr live</title>
+  </head>
+  <body>
+    <div id="content">
+      <h1>νScr live</h1>
+      <div id="errorbox"></div>
+
+      <div id="mainbody">
+        <div id="left">
+          <h2>Global protocol</h2>
+          <textarea rows="30" cols="80" id="protocol-textarea" default="Enter text..."></textarea>
+          <br />
+          <div style="text-align: center">
+            <select required id="examples">
+              <option value="" disabled selected hidden>Load an example</option>
+            </select>
+            <br/>
+            <input type="submit" id="button" value="Analyse" />
+            <br />
+            </div>
+        </div>
+        <div id="right">
+          <h2>Local types</h2>
+          <div id="roles"></div>
+          <pre id="projected"/></pre>
+          
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+        
+    
