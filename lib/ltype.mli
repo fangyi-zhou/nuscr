@@ -6,10 +6,10 @@ open Names
 
 (** Local types. *)
 type t =
-  | RecvL of Gtype.message * RoleName.t * t
+  | RecvL of Gtype.message * Gtype.payload list * RoleName.t * t
       (** [RecvL (msg, name, t)] waits for message [msg] from [name] and
           continues as [t] *)
-  | SendL of Gtype.message * RoleName.t * t
+  | SendL of Gtype.message * Gtype.payload list * RoleName.t * t
       (** [SendL (msg, name, t)] sends message [msg] to [name] and continues
           as [t] *)
   | ChoiceL of RoleName.t * t list

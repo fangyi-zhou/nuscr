@@ -85,7 +85,7 @@ let of_local_type lty =
   let rec conv_ltype_aux env =
     let {g; tyvars} = env in
     function
-    | RecvL (m, n, l) ->
+    | RecvL (m, _, n, l) ->
         let curr = fresh () in
         let env, next = conv_ltype_aux env l in
         let g = env.g in
@@ -93,7 +93,7 @@ let of_local_type lty =
         let e = (curr, RecvA (n, m), next) in
         let g = G.add_edge_e g e in
         ({env with g}, curr)
-    | SendL (m, n, l) ->
+    | SendL (m, _, n, l) ->
         let curr = fresh () in
         let env, next = conv_ltype_aux env l in
         let e = (curr, SendA (n, m), next) in
