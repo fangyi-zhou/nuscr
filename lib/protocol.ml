@@ -13,9 +13,9 @@ let rec swap_role swap_role_f {value; loc} =
           ; from_role= swap_role_f from_role
           ; to_roles= List.map ~f:swap_role_f to_roles
           ; ann }
-    | Recursion (rec_name, g) ->
-        Recursion (rec_name, List.map ~f:(swap_role swap_role_f) g)
-    | Continue rec_name -> Continue rec_name
+    | Recursion (rec_name, recvar, g) ->
+        Recursion (rec_name, recvar, List.map ~f:(swap_role swap_role_f) g)
+    | Continue (rec_name, exprs) -> Continue (rec_name, exprs)
     | Choice (role, gs) ->
         Choice
           ( swap_role_f role
@@ -98,7 +98,8 @@ let expand_global_protocol (scr_module : scr_module)
         [ { loc
           ; value=
               Recursion
-                (rec_var_of_protocol_roles (name, roles), interactions) } ]
+                (rec_var_of_protocol_roles (name, roles), [], interactions)
+          } ]
       else interactions
     in
     interactions
@@ -109,12 +110,12 @@ let expand_global_protocol (scr_module : scr_module)
        * true indicates that the protocol has been called, meaning it is recursive;
        * false otherwise *)
       match value with
-      | Do (name, [], roles, None) when Map.mem known (name, roles) ->
+      | Do (name, [], roles, _annot) when Map.mem known (name, roles) ->
           let known = Map.update known (name, roles) ~f:(fun _ -> true) in
           ( known
-          , [{value= Continue (rec_var_of_protocol_roles (name, roles)); loc}]
-          )
-      | Do (name, [], roles, None) ->
+          , [ { value= Continue (rec_var_of_protocol_roles (name, roles), [])
+              ; loc } ] )
+      | Do (name, [], roles, _annot) ->
           let protocol_to_expand = Map.find protocols (Name.user name) in
           let protocol_to_expand, _, arity =
             match protocol_to_expand with
@@ -137,9 +138,9 @@ let expand_global_protocol (scr_module : scr_module)
           let known = Map.remove known (name, roles) in
           (known, interactions)
       | Do _ -> unimpl "Do with other features"
-      | Recursion (r, is) ->
+      | Recursion (r, recvars, is) ->
           let known, is = expand_aux known is in
-          (known, [{i with value= Recursion (r, is)}])
+          (known, [{i with value= Recursion (r, recvars, is)}])
       | Choice (r, iss) ->
           let known, iss = List.fold_map ~f:expand_aux ~init:known iss in
           (known, [{i with value= Choice (r, iss)}])

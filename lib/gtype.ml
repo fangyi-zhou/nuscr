@@ -183,13 +183,13 @@ let of_protocol (global_protocol : Syntax.global_protocol) =
             MessageG (of_syntax_message message, from_role, to_role, acc)
           in
           List.fold_right ~f ~init to_roles
-      | Recursion (rname, interactions) ->
+      | Recursion (rname, _, interactions) ->
           let rname = TypeVariableName.of_name rname in
           if List.mem rec_names rname ~equal:TypeVariableName.equal then
             unimpl "Alpha convert recursion names"
           else assert_empty rest ;
           MuG (rname, conv_interactions (rname :: rec_names) interactions)
-      | Continue name ->
+      | Continue (name, _) ->
           let name = TypeVariableName.of_name name in
           if List.mem rec_names name ~equal:TypeVariableName.equal then (
             assert_empty rest ; TVarG name )

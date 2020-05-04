@@ -94,6 +94,8 @@ and token = parse
 | ')' { RPAR }
 | '{' { LCURLY }
 | '}' { RCURLY }
+| '[' { LSQUARE }
+| ']' { RSQUARE }
 | '@' { ARROBA }
 
 (* keywords *)

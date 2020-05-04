@@ -114,6 +114,9 @@ let message_payload_ty =
   | Message {payload; _} -> List.map ~f:payload_type_of_payload_t payload
   | _ -> []
 
+type rec_var = {var: name; roles: name list; ty: payloadt; init: expr}
+[@@deriving show {with_path= false}]
+
 type global_interaction = raw_global_interaction located
 [@@deriving show {with_path= false}]
 
@@ -124,8 +127,8 @@ and raw_global_interaction =
       ; to_roles: name list
       ; ann: annotation option }
   (* recursion variable, protocol *)
-  | Recursion of name * global_interaction list
-  | Continue of name
+  | Recursion of name * rec_var list * global_interaction list
+  | Continue of name * expr list
   (* role, protocol options *)
   | Choice of name * global_interaction list list
   (* protocol * non role args * roles *)
