@@ -16,6 +16,8 @@ val pragma_of_string : string -> pragma
 
 type pragmas = (pragma * string option) list [@@deriving show]
 
+val check_directed_choice : unit -> bool
+
 val solver_show_queries : unit -> bool
 (** Whether to display queries to SMT solvers (with RefinementTypes pragma) *)
 
