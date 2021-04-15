@@ -16,8 +16,8 @@ module Efsm = struct
   include Mpst.Efsm
 end
 
-module Routedfsm = struct
-  include Mpst.Routedfsm
+module Routedefsm = struct
+  include Mpst.Routedefsm
 end
 
 module Err = struct
