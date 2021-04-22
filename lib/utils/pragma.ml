@@ -1,6 +1,7 @@
 open! Base
 
 type pragma =
+  | CheckDirectedChoiceDisabled
   | NestedProtocols
   | ShowPragmas
   | PrintUsage
@@ -13,6 +14,7 @@ type pragma =
 
 let pragma_of_string str : pragma =
   match str with
+  | "CheckDirectedChoiceDisabled" -> CheckDirectedChoiceDisabled
   | "ShowPragmas" -> ShowPragmas
   | "PrintUsage" -> PrintUsage
   | "NestedProtocols" -> NestedProtocols
@@ -26,7 +28,7 @@ let pragma_of_string str : pragma =
 type pragmas = (pragma * string option) list [@@deriving show]
 
 type t =
-  { check_directed_choice: bool 
+  { check_directed_choice_disabled: bool 
   ; solver_show_queries: bool
   ; nested_protocol_enabled: bool
   ; refinement_type_enabled: bool
@@ -37,7 +39,7 @@ type t =
   ; verbose: bool }
 
 let default =
-  { check_directed_choice= true 
+  { check_directed_choice_disabled= false
   ; solver_show_queries= false
   ; nested_protocol_enabled= false
   ; refinement_type_enabled= false
@@ -49,7 +51,10 @@ let default =
 
 let config = ref default
 
-let check_directed_choice () = !config.check_directed_choice
+let check_directed_choice_disabled () = !config.check_directed_choice_disabled
+
+let set_check_directed_choice_disabled check_directed_choice_disabled =
+  config := {!config with check_directed_choice_disabled}
 
 let solver_show_queries () = !config.solver_show_queries
 
@@ -129,6 +134,7 @@ let load_from_pragmas pragmas =
     match (k, v) with
     | NestedProtocols, _ -> set_nested_protocol true
     | RefinementTypes, _ -> set_refinement_type true
+    | CheckDirectedChoiceDisabled, _ -> set_check_directed_choice_disabled true
     | SenderValidateRefinements, _ -> set_sender_validate_refinements true
     | ReceiverValidateRefinements, _ ->
         set_receiver_validate_refinements true
