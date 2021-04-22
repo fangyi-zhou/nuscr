@@ -2,7 +2,7 @@
 
 (** This module transforms a EFSM generated from local types into OCaml code. *)
 
-(*open Names
+open Names
 open Mpst
 open! Ppxlib_ast
 
@@ -15,4 +15,4 @@ val gen_ast :
 
 val gen_code :
   ?monad:bool -> ProtocolName.t * RoleName.t -> Efsm.state * Efsm.t -> string
-(** Generate string representation of a projected EFSM *)*)
+(** Generate string representation of a projected EFSM *)

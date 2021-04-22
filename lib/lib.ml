@@ -161,9 +161,10 @@ let generate_routed_fsm ast ~protocol ~role ~server =
   let _ = Chorautomata.of_global_type gt in
   Routedefsm.of_global_type gt ~role ~server
 
-(*let generate_ocaml_code ~monad ast ~protocol ~role =
+
+let generate_ocaml_code ~monad ast ~protocol ~role =
   let fsm = generate_fsm ast ~protocol ~role in
-  Ocamlcodegen.gen_code ~monad (protocol, role) fsm*)
+  Codegen.Ocaml.gen_code ~monad (protocol, role) fsm
 
 let generate_sexp ast ~protocol =
   let gp =
@@ -181,11 +182,11 @@ let generate_sexp ast ~protocol =
   let gtype = Gtype.normalise gtype in
   Sexp.to_string_hum (Gtype.sexp_of_t gtype)
 
-(*let generate_ast ~monad ast ~protocol ~role =
+let generate_ast ~monad ast ~protocol ~role =
   let fsm = generate_fsm ast ~protocol ~role in
-  Ocamlcodegen.gen_ast ~monad (protocol, role) fsm*)
+  Codegen.Ocaml.gen_ast ~monad (protocol, role) fsm
 
 let generate_fstar_code ast ~protocol ~role =
   let lt = project_role ast ~protocol ~role in
   let efsm = Efsm.of_local_type_with_rec_var_info lt in
-  Fstarcodegen.gen_code efsm
+  Codegen.Fstar.gen_code efsm
