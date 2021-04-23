@@ -132,10 +132,14 @@ let validate_config () =
 let load_from_pragmas pragmas =
   let process_global_pragma (k, v) =
     match (k, v) with
-    | NestedProtocols, _ -> set_nested_protocol true
-    | RefinementTypes, _ -> set_refinement_type true
-    | CheckDirectedChoiceDisabled, _ -> set_check_directed_choice_disabled true
-    | SenderValidateRefinements, _ -> set_sender_validate_refinements true
+    | CheckDirectedChoiceDisabled, _ ->
+        set_check_directed_choice_disabled true
+    | NestedProtocols, _ ->
+        set_nested_protocol true
+    | RefinementTypes, _ ->
+        set_refinement_type true
+    | SenderValidateRefinements, _ ->
+        set_sender_validate_refinements true
     | ReceiverValidateRefinements, _ ->
         set_receiver_validate_refinements true
     | ValidateRefinementSatisfiability, _ ->
